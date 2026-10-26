@@ -3,8 +3,26 @@ import customtkinter as ctk  # Importa a biblioteca CustomTkinter para criar uma
 ctk.set_appearance_mode("Light")  # Define o modo de aparência da interface como claro para combinar com a imagem de referência
 ctk.set_default_color_theme("blue")  # Define o tema de cores padrão para os componentes do CustomTkinter
 
-def clique_botao(valor):  # Função executada ao clicar em qualquer botão da calculadora
-    pass  # Espaço reservado para a lógica futura dos botões
+def clique_botao(valor):  # Função principal que gerencia a ação de clique de cada botão da calculadora
+    valor_atual = display_var.get()  # Pega o texto atual que está sendo exibido no visor da calculadora
+    
+    if valor == "CE":  # Verifica se o botão pressionado pelo usuário foi o 'CE' (limpeza da entrada atual)
+        display_var.set("0")  # Reseta o valor do display da calculadora de volta para o número zero
+    elif valor == "⌫":  # Verifica se o botão pressionado foi o de apagar o último dígito (backspace)
+        if len(valor_atual) > 1:  # Verifica se o visor possui mais de um caractere atualmente
+            display_var.set(valor_atual[:-1])  # Remove o último caractere da string atual do display
+        else:  # Caso o visor tenha apenas um caractere restando
+            display_var.set("0")  # Reseta o display para "0" garantindo que ele nunca fique completamente vazio
+        
+    elif valor in "0123456789":  # Verifica se o botão pressionado é um dos números de 0 até 9
+        if valor_atual == "0":  # Condição para verificar se o display está apenas com o zero inicial
+            display_var.set(valor)  # Substitui o zero inicial pelo primeiro número digitado
+        else:  # Caso o visor já contenha outros números digitados anteriormente
+            display_var.set(valor_atual + valor)  # Concatena o novo número ao lado dos números já existentes no visor
+            
+    elif valor == ",":  # Verifica se o botão pressionado foi a vírgula decimal
+        if "," not in valor_atual:  # Garante que só pode existir uma vírgula por número no visor
+            display_var.set(valor_atual + valor)  # Adiciona a vírgula ao final do valor atual do display
 
 janela = ctk.CTk()  # Inicializa a janela principal da aplicação utilizando CustomTkinter
 janela.title("Calculadora")  # Define o título exibido na barra de topo da janela
