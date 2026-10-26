@@ -1,0 +1,34 @@
+------ QUANDO O CODIGO ESTIVER PRONTO COLOQUE ESTE ARQUIVO NO GITIGNORE ------
+
+VENV:
+
+python -m venv venv
+
+.\venv\Scripts\Activate.ps1
+
+GITHUB:
+1. Cole e execute o seguinte comando para clonar o repositório
+git clone https://github.com/FilipeNonemacher/calculadora.git 
+
+2.Navegue até a pasta do projeto que acabou de ser baixada
+cd calculadora 
+
+3. Abra a pasta no editor
+code . 
+
+4.Para ver quais arquivos foram modificados, criados ou excluídos
+git status
+
+5.Para adicionar todos os arquivos modificados/novos de uma vez
+git add .
+
+6. para adicionar apenas um arquivo específico
+git add nome-do-arquivo.extensao
+
+7. Para carregar as alterações locais para o repositório remoto no GitHub
+git push origin main
+
+8. Enviar os commits para o GitHub
+git add .
+git commit -m "Atualiza a calculadora com novas funcionalidades"
+git push
