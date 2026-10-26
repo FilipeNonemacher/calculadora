@@ -32,3 +32,6 @@ git push origin main
 git add .
 git commit -m "Atualiza a calculadora com novas funcionalidades"
 git push
+
+9. para baixar e atualizar o seu código local com as últimas alterações que estão no repositório remoto
+git pull
