@@ -1,4 +1,7 @@
 import customtkinter as ctk  # Importa a biblioteca CustomTkinter para criar uma interface moderna com estilos do Windows 11
+from src.calculos import Calculadora
+
+calculadora = Calculadora()
 
 ctk.set_appearance_mode("Light")  # Mantém o modo claro para o efeito translúcido
 ctk.set_default_color_theme("blue")  # Define o tema de cores padrão para os componentes do CustomTkinter
@@ -9,82 +12,11 @@ operador_atual = None
 limpar_visor = False
 veio_de_igual = False #controlar se viemos de um cálculo concluído
 
-def clique_botao(valor):  # Função principal que gerencia a ação de clique de cada botão da calculadora
-    global primeiro_numero, operador_atual, limpar_visor, veio_de_igual #permitir que a função altere as variáveis
-    valor_atual = display_var.get()  # Pega o texto atual que está sendo exibido no visor da calculadora
-    
-    if valor == "CE":  # Verifica se o botão pressionado foi o 'CE'
-        if veio_de_igual:
-            # Se o último botão pressionado foi o '=', o CE limpa tudo por uma única vez
-            display_var.set("0")
-            historico_var.set("")
-            primeiro_numero = None
-            operador_atual = None
-            limpar_visor = False
-            veio_de_igual = False  # Reseta a bandeira para o CE voltar ao comportamento normal
-        else:
-            # Comportamento padrão do CE: limpa apenas o display atual
-            display_var.set("0")
+def clique_botao(valor):
+    visor, historico = calculadora.pressionar(valor)
 
-    elif valor == "⌫":  # Verifica se o botão pressionado foi o de apagar o último dígito (backspace)
-        if len(valor_atual) > 1:  # Verifica se o visor possui mais de um caractere atualmente
-            display_var.set(valor_atual[:-1])  # Remove o último caractere da string atual do display
-        else:  # Caso o visor tenha apenas um caractere restando
-            display_var.set("0")  # Reseta o display para "0" garantindo que ele nunca fique completamente vazio
-        
-    elif valor in "0123456789":  # Verifica se o botão pressionado é um dos números de 0 até 9
-        veio_de_igual = False
-        if limpar_visor or valor_atual == "0":  # Condição para verificar se o display está apenas com o zero inicial
-            display_var.set(valor)  # Substitui o zero inicial pelo primeiro número digitado
-            limpar_visor = False
-        else:  # Caso o visor já contenha outros números digitados anteriormente
-            display_var.set(valor_atual + valor)  # Concatena o novo número ao lado dos números já existentes no visor
-           
-    elif valor == ",":  # Verifica se o botão pressionado foi a vírgula decimal
-        veio_de_igual = False
-        if "," not in valor_atual:  # Garante que só pode existir uma vírgula por número no visor
-            display_var.set(valor_atual + valor)  # Adiciona a vírgula ao final do valor atual do display
-    
-    elif valor in "+-×÷": #capturar quando o usuário clica em um operador matemático
-        primeiro_numero = float(valor_atual.replace(",", "."))
-        operador_atual = valor
-        historico_var.set(f"{valor_atual} {operador_atual}")
-        limpar_visor = True
-    
-    
-
-
-    #Aqui coloquei a funçao de operação matemtática mas pode se puxado para o Back posteriormente
-    elif valor == "=":
-        if primeiro_numero is not None and operador_atual is not None:
-            segundo_numero = float(valor_atual.replace(",", "."))
-            
-            if operador_atual == "+":
-                resultado = primeiro_numero + segundo_numero
-            elif operador_atual == "-":
-                resultado = primeiro_numero - segundo_numero
-            elif operador_atual == "×":
-                resultado = primeiro_numero * segundo_numero
-            elif operador_atual == "÷":
-                resultado = primeiro_numero / segundo_numero if segundo_numero != 0 else "Erro"
-
-            if isinstance(resultado, float) and resultado.is_integer():
-                resultado = int(resultado)
-
-            historico_var.set(f"{str(primeiro_numero).replace('.', ',')} {operador_atual} {valor_atual} =")
-            display_var.set(str(resultado).replace(".", ","))
-            primeiro_numero = None
-            operador_atual = None
-            limpar_visor = True
-            veio_de_igual = True
-
-    elif valor in ("CE", "C"):
-        display_var.set("0")
-        historico_var.set("")  # Limpa o histórico superior
-        primeiro_numero = None
-        operador_atual = None
-        limpar_visor = False
-
+    display_var.set(visor)
+    historico_var.set(historico)
 
 
 
