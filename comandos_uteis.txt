@@ -35,3 +35,6 @@ git push
 
 9. para baixar e atualizar o seu código local com as últimas alterações que estão no repositório remoto
 git pull
+
+10. Realizar TESTES
+python -m unittest discover -s tests -p "test_*.py" -v
